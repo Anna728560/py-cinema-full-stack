@@ -12,17 +12,17 @@ export default {
     movie: {}
   }),
   computed: {
-    token() {
+    token () {
       return localStorage.getItem('access');
     }
   },
   methods: {
-    handleClick(evt) {
+    handleClick (evt) {
       if (evt.target !== this.$el) return;
       this.handleMovieDetailsClose();
     },
 
-    hashHandler() {
+    hashHandler () {
       const match = location.hash.match(/#\/movies\/(\d+)/);
       if (!match) {
         this.active = false;
@@ -41,10 +41,10 @@ export default {
       this.fetchMovie(id);
     },
 
-    async fetchMovie(id) {
+    async fetchMovie (id) {
       try {
-        const {data: movie} = await this.axios.get(`${import.meta.env.VITE_API_URL}/api/cinema/movies/${id}/`, {
-          headers: {Authorization: `Bearer ${this.token}`}
+        const { data: movie } = await this.axios.get(`${import.meta.env.VITE_API_URL}/api/cinema/movies/${id}/`, {
+          headers: { Authorization: `Bearer ${this.token}` }
         });
 
         this.movie = movie;
@@ -53,18 +53,18 @@ export default {
       }
     },
 
-    handleMovieDetailsClose() {
+    handleMovieDetailsClose () {
       location.hash = '#/movies';
     }
   },
-  mounted() {
+  mounted () {
     window.addEventListener('hashchange', this.hashHandler);
     this.hashHandler();
   },
-  beforeDestroy() {
+  beforeDestroy () {
     window.removeEventListener('hashchange', this.hashHandler);
   },
-  components: {MovieModal}
+  components: { MovieModal }
 
 };
 </script>
