@@ -47,16 +47,16 @@ export default {
     error: null
   }),
   computed: {
-    token() {
+    token () {
       return localStorage.getItem('access');
     }
   },
   methods: {
-    hashHandler() {
+    hashHandler () {
       this.active = Boolean(location.hash.match('my-profile$'));
     },
 
-    async changeUserData() {
+    async changeUserData () {
       const config = {
         headers: {
           Authorization: `Bearer ${this.token}`,
@@ -69,35 +69,35 @@ export default {
       if (this.password) body.password = this.password;
 
       try {
-        const {data} = await this.axios.patch(`${import.meta.env.VITE_API_URL}/api/user/me/`, body, config);
+        const { data } = await this.axios.patch(`${import.meta.env.VITE_API_URL}/api/user/me/`, body, config);
         this.success = !!data;
 
         this.email = '';
         this.password = '';
       } catch (err) {
         console.error(err);
-        const {password = null, email = null} = err.response.data;
+        const { password = null, email = null } = err.response.data;
         this.error = password || email;
       }
     }
   },
   watch: {
-    error() {
+    error () {
       setTimeout(() => {
         this.error = null;
       }, 15 * 1e3);
     },
-    success() {
+    success () {
       setTimeout(() => {
         this.success = null;
       }, 15 * 1e3);
     }
   },
-  mounted() {
+  mounted () {
     window.addEventListener('hashchange', this.hashHandler);
     this.hashHandler();
   },
-  beforeDestroy() {
+  beforeDestroy () {
     window.removeEventListener('hashchange', this.hashHandler);
   },
   components: {
